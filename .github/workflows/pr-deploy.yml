@@ -24,7 +24,7 @@ jobs:
       - run: cat deploy-url.txt
       - run: echo "::set-env name=ZEIT_DEPLOY::$(cat deploy-url.txt)"
       - name: comment PR
-        uses: uses: unsplash/comment-on-pr@master
+        uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
