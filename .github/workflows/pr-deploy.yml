@@ -9,8 +9,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - run: echo "Deploying PR with now..."
-      - name: deploy
+      - name: Deploy to now.sh                  # requires .now/project.json checked in
         env:
           ZEIT_TOKEN: ${{ secrets.ZeitToken }}
           BUILD_ID: ${{ github.sha }}
@@ -21,11 +20,19 @@ jobs:
           --no-clipboard
           --token ${ZEIT_TOKEN}
           > deploy-url.txt
-      - run: cat deploy-url.txt
-      - run: echo "::set-env name=ZEIT_DEPLOY::$(cat deploy-url.txt)"
-      - name: comment PR
+      - name: Set deploy url to env variable
+        run: echo "::set-env name=ZEIT_DEPLOY::$(cat deploy-url.txt)"
+      - name: Alias with PR number
+        env:
+          ZEIT_TOKEN: ${{ secrets.ZeitToken }}
+        run: >
+          npx now alias
+          --token ${ZEIT_TOKEN}
+          `cat deploy-url.txt`
+          nowsy-test-pr-${{ github.event.number }}.now.sh
+      - name: Comment on PR
         uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: "Oi, worker bee :tada:! Puttin it on :robot: :heart: ${{ env.ZEIT_DEPLOY }}"
+          msg: "Oi, worker bee :tada:! Puttin it on :robot: :heart: <br>- ${{ env.ZEIT_DEPLOY }}<br>- https://nowsy-test-pr-${{ github.event.number }}.now.sh"
