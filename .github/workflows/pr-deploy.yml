@@ -17,7 +17,6 @@ jobs:
         run: >
           npx now
           --debug
-          --local-config=./now/project.json
           --build-env NODE_ENV=production
           --build-env BUILD_ID=${BUILD_ID}
           --env NODE_ENV=production
