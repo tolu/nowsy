@@ -15,11 +15,8 @@ jobs:
           ZEIT_TOKEN: ${{ secrets.ZeitToken }}
           BUILD_ID: ${{ github.sha }}
         run: >
-          now deploy
-          --debug
-          --build-env NODE_ENV=production
+          npx now deploy
           --build-env BUILD_ID=${BUILD_ID}
-          --env NODE_ENV=production
           --public
           --no-clipboard
           --token ${ZEIT_TOKEN}
@@ -28,4 +25,4 @@ jobs:
       - uses: github-actions-up-and-running/pr-comment@v1.0.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          message: 'Oi, worker bee :tada:! Puttin it on :robot: :heart: ${{ env.ZEIT_DEPLOY }}'
+          message: 'Oi, worker bee :tada:! Puttin it on :robot: :heart: ${ZEIT_DEPLOY}'
