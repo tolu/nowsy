@@ -1,8 +1,8 @@
-name: On PR Created
+name: On PR Opened
 on: 
   pull_request:
     types:
-      - created
+      - opened
 jobs:
   comment:
     runs-on: ubuntu-latest
