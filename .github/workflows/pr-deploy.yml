@@ -10,8 +10,22 @@ jobs:
         with:
           node-version: '12.x'
       - run: echo "Deploying PR with now..."
-      - run: npx now --debug --no-clipboard --token ${{ secrets.ZeitToken }} > deploy.txt
-      - run: echo "::set-env name=ZEIT_DEPLOY::$(cat deploy.txt)"
+      - name: deploy
+        env:
+          ZEIT_TOKEN: ${{ secrets.ZeitToken }}
+          BUILD_ID: ${{ github.sha }}
+        run: >
+          npx now
+          --debug
+          --local-config=./now/project.json
+          --build-env NODE_ENV=production
+          --build-env BUILD_ID=${BUILD_ID}
+          --env NODE_ENV=production
+          --public
+          --no-clipboard
+          --token ${ZEIT_TOKEN}
+          > deploy-url.txt
+      - run: echo "::set-env name=ZEIT_DEPLOY::$(cat deploy-url.txt)"
       - uses: github-actions-up-and-running/pr-comment@v1.0.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
