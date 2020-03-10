@@ -15,7 +15,7 @@ jobs:
           ZEIT_TOKEN: ${{ secrets.ZeitToken }}
           BUILD_ID: ${{ github.sha }}
         run: >
-          npx now
+          now deploy
           --debug
           --build-env NODE_ENV=production
           --build-env BUILD_ID=${BUILD_ID}
