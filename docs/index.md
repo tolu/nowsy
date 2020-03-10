@@ -2,4 +2,4 @@
 
 Her hender det grejjer!
 
-!> foo1 coming your way
+!> FooBar coming your way
