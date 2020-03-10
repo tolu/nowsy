@@ -6,11 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: amondnet/now-deployment@v2.0.1
+      - uses: actions/setup-node@v1
         with:
-          zeit-token: ${{ secrets.ZeitToken }}
-          github-comment: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-deployment: false
-          working-directory: docs
-          now-project-id: nowsy-test
+          node-version: '12.x'
+      - run: npm --version
+      - run: npx now -t ${{ secrets.ZeitToken }} > deploy.txt
+      - run: echo "::set-env name=ZEIT_DEPLOY::$(cat deploy.txt)"
+      - uses: github-actions-up-and-running/pr-comment@v1.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'Oi, worker bee :tada:! Puttin it on :robot: :heart: ${{ env.ZEIT_DEPLOY }}'
