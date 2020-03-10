@@ -1,0 +1,15 @@
+name: On PR Created
+on: 
+  pull_request:
+    types:
+      - created
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add comment with deploy url
+        uses: unsplash/comment-on-pr@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          msg: "PR automatically deployed to:<br>- https://nowsy-test-pr-${{ github.event.number }}.now.sh"
